@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Admission Form</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+</head>
+<body class="min-h-screen bg-gradient-to-r from-gray-400 to-zinc-200 flex items-center justify-center p-6">
+
+    <form id="admissionForm" action="#" method="post" novalidate class="w-full max-w-[420px] p-6 border border-white/40 rounded-2xl bg-white/20 backdrop-blur-md shadow-xl">
+        <h1 class="mb-4 text-2xl font-bold">College Admission Form</h1>
+
+        <div class="flex flex-col mb-2.5">
+            <label for="name" class="mb-1.5 font-semibold">Enter your name:</label>
+            <input class="w-full px-2.5 py-2 rounded-lg border border-white/50 bg-white/70 outline-none" type="text" id="name" placeholder="Enter name" required>
+            <p id="nameError" class="mt-1.5 text-sm text-red-600 hidden">Name must be at least 3 characters and contain only letters and spaces.</p>
+        </div>
+
+        <div class="flex flex-col mb-2.5">
+            <label for="email" class="mb-1.5 font-semibold">Enter your email:</label>
+            <input class="w-full px-2.5 py-2 rounded-lg border border-white/50 bg-white/70 outline-none" type="email" id="email" placeholder="abc@example.com" required>
+            <p id="emailError" class="mt-1.5 text-sm text-red-600 hidden">Please enter a valid email address.</p>
+        </div>
+
+        <div class="flex flex-col mb-2.5">
+            <label for="mobile" class="mb-1.5 font-semibold">Enter mobile number:</label>
+            <input class="w-full px-2.5 py-2 rounded-lg border border-white/50 bg-white/70 outline-none" type="tel" id="mobile" placeholder="9876543210" required>
+            <p id="mobileError" class="mt-1.5 text-sm text-red-600 hidden">Enter 10-digit mobile number.</p>
+        </div>
+
+        <div class="flex flex-col mb-2.5">
+            <label for="dob" class="mb-1.5 font-semibold">Enter date of birth:</label>
+            <input class="w-full px-2.5 py-2 rounded-lg border border-white/50 bg-white/70 outline-none" type="date" id="dob" required>
+            <p id="dobError" class="mt-1.5 text-sm text-red-600 hidden">Date of birth is required.</p>
+        </div>
+
+        <div class="flex flex-col mb-2.5">
+            <label for="password" class="mb-1.5 font-semibold">Enter password:</label>
+            <input class="w-full px-2.5 py-2 rounded-lg border border-white/50 bg-white/70 outline-none" type="password" id="password" placeholder="******" required minlength="8">
+            <p id="passwordError" class="mt-1.5 text-sm text-red-600 hidden">Password must be 8+ chars with uppercase, lowercase, number, and special character.</p>
+            <p id="passwordStrength" class="mt-1.5 text-sm text-gray-700">Strength: N/A</p>
+        </div>
+
+        <div class="flex flex-col mb-2.5">
+            <label for="confirmPassword" class="mb-1.5 font-semibold">Confirm password:</label>
+            <input class="w-full px-2.5 py-2 rounded-lg border border-white/50 bg-white/70 outline-none" type="password" id="confirmPassword" placeholder="******" required>
+            <p id="confirmPasswordError" class="mt-1.5 text-sm text-red-600 hidden">Passwords do not match.</p>
+        </div>
+
+        <button id="submitBtn" type="submit" class="w-full mt-3.5 py-2.5 rounded-lg border border-blue-600 bg-blue-600/90 text-white text-base font-semibold disabled:opacity-60 disabled:cursor-not-allowed" disabled>Submit</button>
+        <p id="formStatus" class="mt-2.5 text-sm text-green-700 hidden">Form is valid and ready to submit.</p>
+    </form>
+    
+    <script src="script.js"></script>
+</body>
+</html>
