@@ -1,103 +1,149 @@
+let namePattern = /^[A-Za-z ]{3,}$/;
+let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+let mobilePattern = /^[0-9]{10}$/;
+let passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@#$%^&*]).{8,}$/;
 
-const form = document.getElementById("admissionForm");
-const submitBtn = document.getElementById("submitBtn");
-const formStatus = document.getElementById("formStatus");
-const passwordStrength = document.getElementById("passwordStrength");
+function checkName() {
+    let value = document.getElementById("name").value;
+    let error = document.getElementById("nameError");
 
-const input = {
-    name: document.getElementById("name"),
-    email: document.getElementById("email"),
-    mobile: document.getElementById("mobile"),
-    dob: document.getElementById("dob"),
-    password: document.getElementById("password"),
-    confirmPassword: document.getElementById("confirmPassword")
-};
-
-const error = {
-    name: document.getElementById("nameError"),
-    email: document.getElementById("emailError"),
-    mobile: document.getElementById("mobileError"),
-    dob: document.getElementById("dobError"),
-    password: document.getElementById("passwordError"),
-    confirmPassword: document.getElementById("confirmPasswordError")
-};
-
-const touched = { name: false, email: false, mobile: false, dob: false, password: false, confirmPassword: false };
-const valid = { name: false, email: false, mobile: false, dob: false, password: false, confirmPassword: false };
-
-const rules = {
-    name: (v) => /^[A-Za-z ]{3,}$/.test(v.trim()),
-    email: (v) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v.trim()),
-    mobile: (v) => /^\d{10}$/.test(v.trim()),
-    dob: (v) => v.trim() !== "",
-    password: (v) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(v),
-    confirmPassword: () => input.confirmPassword.value !== "" && input.confirmPassword.value === input.password.value
-};
-
-function showState(key) {
-    const hasValue = input[key].value.trim() !== "";
-
-    if (!touched[key] || !hasValue) {
-        input[key].style.borderColor = "";
-        error[key].classList.add("hidden");
-        return;
+    if (value === "") {
+        error.innerText = "";
+        error.style.color = "";
+    } else if (namePattern.test(value)) {
+        error.innerText = "Valid name";
+        error.style.color = "green";
+    } else {
+        error.innerText = "Enter valid name";
+        error.style.color = "";
     }
 
-    input[key].style.borderColor = valid[key] ? "green" : "red";
-    error[key].classList.toggle("hidden", valid[key]);
+    checkAll();
 }
 
-function updatePasswordStrength(value) {
-    if (value.length === 0) {
-        passwordStrength.textContent = "Strength: N/A";
-        passwordStrength.style.color = "#374151";
-        return;
+function checkEmail() {
+    let value = document.getElementById("email").value;
+    let error = document.getElementById("emailError");
+
+    if (value === "") {
+        error.innerText = "";
+        error.style.color = "";
+    } else if (emailPattern.test(value)) {
+        error.innerText = "Valid email";
+        error.style.color = "green";
+    } else {
+        error.innerText = "Enter valid email";
+        error.style.color = "";
     }
 
-    let score = 0;
-    if (value.length >= 8) score++;
-    if (/[a-z]/.test(value)) score++;
-    if (/[A-Z]/.test(value)) score++;
-    if (/\d/.test(value)) score++;
-    if (/[^A-Za-z\d]/.test(value)) score++;
-
-    const label = score >= 5 ? "Strong" : score >= 3 ? "Medium" : "Weak";
-    const color = score >= 5 ? "green" : score >= 3 ? "#b45309" : "red";
-    passwordStrength.textContent = "Strength: " + label;
-    passwordStrength.style.color = color;
+    checkAll();
 }
 
-function checkField(key) {
-    valid[key] = rules[key](input[key].value);
-    showState(key);
-}
+function checkMobile() {
+    let value = document.getElementById("mobile").value;
+    let error = document.getElementById("mobileError");
 
-function refreshSubmit() {
-    const allValid = Object.values(valid).every(Boolean);
-    submitBtn.disabled = !allValid;
-    formStatus.classList.toggle("hidden", !allValid);
-}
-
-function onType(key) {
-    touched[key] = true;
-    checkField(key);
-
-    if (key === "password") {
-        updatePasswordStrength(input.password.value);
-        checkField("confirmPassword");
+    if (value === "") {
+        error.innerText = "";
+        error.style.color = "";
+    } else if (mobilePattern.test(value)) {
+        error.innerText = "Valid mobile";
+        error.style.color = "green";
+    } else {
+        error.innerText = "Enter 10-digit number";
+        error.style.color = "";
     }
 
-    refreshSubmit();
+    checkAll();
 }
 
-Object.keys(input).forEach(function (key) {
-    input[key].addEventListener("input", function () {
-        onType(key);
-    });
-});
+function checkDob() {
+    let value = document.getElementById("dob").value;
+    let error = document.getElementById("dobError");
 
-form.addEventListener("submit", function (event) {
-    event.preventDefault();
-});
+    if (value === "") {
+        error.innerText = "Required";
+        error.style.color = "";
+    } else {
+        error.innerText = "Valid date";
+        error.style.color = "green";
+    }
 
-refreshSubmit();
+    checkAll();
+}
+
+function checkPassword() {
+    let value = document.getElementById("password").value;
+    let error = document.getElementById("passwordError");
+    let strength = document.getElementById("strength");
+
+    if (value === "") {
+        error.innerText = "";
+        error.style.color = "";
+        strength.innerText = "";
+    } else if (passwordPattern.test(value)) {
+        error.innerText = "";
+        strength.innerText = "Strong password";
+        strength.style.color = "green";
+    } else {
+        error.innerText = "Weak password";
+        error.style.color = "";
+        strength.innerText = "Weak";
+        strength.style.color = "";
+    }
+
+    checkConfirm();
+    checkAll();
+}
+
+function checkConfirm() {
+    let p = document.getElementById("password").value;
+    let c = document.getElementById("confirm").value;
+    let error = document.getElementById("confirmError");
+
+    if (c === "") {
+        error.innerText = "";
+        error.style.color = "";
+    } else if (p === c) {
+        error.innerText = "Passwords match";
+        error.style.color = "green";
+    } else {
+        error.innerText = "Passwords do not match";
+        error.style.color = "";
+    }
+
+    checkAll();
+}
+
+function checkAll() {
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let mobile = document.getElementById("mobile").value;
+    let dob = document.getElementById("dob").value;
+    let password = document.getElementById("password").value;
+    let confirm = document.getElementById("confirm").value;
+
+    let btn = document.getElementById("btn");
+
+    let isValid = false;
+
+    if (
+        namePattern.test(name) &&
+        emailPattern.test(email) &&
+        mobilePattern.test(mobile) &&
+        dob !== "" &&
+        passwordPattern.test(password) &&
+        password === confirm &&
+        confirm !== ""
+    ) {
+        isValid = true;
+    }
+
+    if (isValid === true) {
+        btn.disabled = false;
+        btn.style.backgroundColor = "green";
+    } else {
+        btn.disabled = true;
+        btn.style.backgroundColor = "#6b7280";
+    }
+}
